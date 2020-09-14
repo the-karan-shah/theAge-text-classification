@@ -115,6 +115,7 @@ def create_corpus(links, update = True):
     df['processed_text'] = df.processed_text.swifter.apply(word_tokenize)
     df['processed_text'] = df.processed_text.swifter.apply(remove_stopwords)
     df['processed_text'] = df.processed_text.swifter.apply(lemmatizer)
+    #add word count... and filter out low word counts 
     
     if (update):
         dfAge = pd.read_csv('theage.csv')
@@ -126,11 +127,12 @@ def create_corpus(links, update = True):
     else:
         return df  
 
+def get_webpage(url):
+    url = url
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
 
-url = "https://www.theage.com.au/"
-response = requests.get(url)
-soup = BeautifulSoup(response.content, 'html.parser')
-
-categories = soup.find("nav",attrs={'class':'_3-9zZ'})
-links = categories.find_all("a")
-df = create_corpus(links)
+    categories = soup.find("nav",attrs={'class':'_3-9zZ'})
+    links = categories.find_all("a")
+    df = create_corpus(links)
+    return df

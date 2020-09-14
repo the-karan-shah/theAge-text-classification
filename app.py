@@ -1,14 +1,28 @@
-from flask import Flask, jsonify, request
-import joblib
+from flask import Flask, jsonify, request, render_template
+from joblib import load 
+import os
+from model import tfidf_rf_model
+from preproccesing import get_webpage
 
 #load the model:
-model = joblib.load()
+if not os.path.isfile('tfidf_rf_model.joblib'):
+    df = get_webpage('https://www.theage.com.au/')
+    tfidf_rf_model(df)
+
+model = load('tfidf_rf_model.joblib')
+
 
 #app
 app = Flask(__name__)
 
 #routes:
-@app.route('/', methods = ['POST'])
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+
+@app.route('/prediction', methods = ['POST'])
 def predict():
     #get the data:
     payload = request.get_json(force = True)
