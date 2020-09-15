@@ -13,7 +13,6 @@ import multiprocessing
 import re
 import swifter
 from sklearn.model_selection import train_test_split
-from preproccesing import get_webpage
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
@@ -23,22 +22,30 @@ from joblib import dump
 def dummy_fun(doc):
     return doc
 
-#initialising tfidf vectorizer:
-tfidf = TfidfVectorizer(
-    analyzer='word',
-    tokenizer=dummy_fun,
-    preprocessor=dummy_fun,
-    token_pattern=None)
 
-df = get_webpage('https://www.theage.com.au/')
+def get_corpus():
+    print('Getting Dataset...')
+    df = pd.read_csv('theage.csv')
+    return df
 
 def tfidf_rf_model(df):
+
+    #initialising tfidf vectorizer:
+    print('Initialising TF-IDF...')
+    tfidf = TfidfVectorizer(
+        analyzer='word',
+        tokenizer=dummy_fun,
+        preprocessor=dummy_fun,
+        token_pattern=None)
+
     X = df['processed_text']
     y = df['Categories']
     
+    print('Fitting TF-IDF...')
     results = tfidf.fit_transform(df['processed_text'])
     X_train, X_test, y_train, y_test = train_test_split(results, y, test_size=0.2, random_state=1, shuffle = y)
 
+    print('Fitting Random Forest...')
     erf = RandomForestClassifier(n_estimators=1000, random_state=0)
     erf.fit(X_train, y_train)
 
@@ -48,6 +55,7 @@ def tfidf_rf_model(df):
     print(classification_report(y_test,y_pred))
     print(accuracy_score(y_test, y_pred))
 
+    print('Saving model...')
     dump(erf, 'tfidf_rf_model.joblib')
 
 
