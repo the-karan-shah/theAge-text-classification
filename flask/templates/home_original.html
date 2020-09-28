@@ -1,0 +1,11 @@
+<h1>Welcome to The Age Newspaper Classifier</h1>
+<h2>Please enter your flower measurements below:</h2>
+<form method="POST">
+    {# This hidden_tag is a CSRF security feature. #}
+    {{ form.hidden_tag() }}
+    {{ form.form_input.label }} {{form.form_input}}
+    <br>
+    {{ form.input_type.label}} {{form.input_type}}
+    <br>
+    {{ form.submit }}
+</form>
