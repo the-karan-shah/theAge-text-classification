@@ -50,7 +50,6 @@ def tfidf_rf_model(df):
     erf.fit(X_train, y_train)
 
     y_pred = erf.predict(X_test)
-#https://towardsdatascience.com/deploying-models-to-flask-fb62155ca2c4
     print(confusion_matrix(y_test,y_pred))
     print(classification_report(y_test,y_pred))
     print(accuracy_score(y_test, y_pred))
