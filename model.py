@@ -49,6 +49,7 @@ def tfidf_rf_model(df):
     erf = RandomForestClassifier(n_estimators=1000, random_state=0)
     erf.fit(X_train, y_train)
 
+    #test should be fed to TfidfVectorizer.transform() and then fed to predict. 
     y_pred = erf.predict(X_test)
     print(confusion_matrix(y_test,y_pred))
     print(classification_report(y_test,y_pred))

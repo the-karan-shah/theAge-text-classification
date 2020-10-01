@@ -20,6 +20,13 @@ if not os.path.isfile('tfidf_rf_model.joblib'):
     df = get_corpus()
     tfidf_rf_model(df)
 
+def model_update(update = True):
+    print('Updating Model...')
+    df = get_corpus()
+    tfidf_rf_model(df)
+
+model_update()
+
 print('Loading Model...')
 model = load('tfidf_rf_model.joblib')
 
