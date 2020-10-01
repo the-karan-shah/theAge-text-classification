@@ -25,7 +25,7 @@ def model_update(update = True):
     df = get_corpus()
     tfidf_rf_model(df)
 
-model_update()
+#model_update()
 
 print('Loading Model...')
 model = load('tfidf_rf_model.joblib')
