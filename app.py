@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, render_template, url_for, redirect
 from joblib import load 
 import os
-from model import get_corpus, tfidf_rf_model, tfidf_rf_pred
+from model import get_corpus, tfidf_rf_model, tfidf_rf_pred, model_update
 from json import dumps, loads
 from preproccesing import lemmatizer, string_normalise, remove_stopwords
 from nltk import word_tokenize
@@ -9,6 +9,7 @@ from flask_wtf import FlaskForm
 from wtforms import TextAreaField, SubmitField, SelectField 
 from wtforms.validators import DataRequired
 from utilities import  get_individual_article, input_cleaner, create_dict
+import pandas as pd
 
 #app
 app = Flask(__name__)
@@ -17,11 +18,6 @@ app.config['SECRET_KEY'] = 'karan'
 #load the model:
 if not os.path.isfile('tfidf_rf_model.joblib'):
     print('Model file not found. Creating new model...')
-    df = get_corpus()
-    tfidf_rf_model(df)
-
-def model_update(update = True):
-    print('Updating Model...')
     df = get_corpus()
     tfidf_rf_model(df)
 
